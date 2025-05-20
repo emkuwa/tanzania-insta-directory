@@ -1,0 +1,4 @@
+const SUPABASE_URL = 'https://tlpgenomsiszmmcbxcis.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRscGdlbm9tc2l6bW1jYnhjaXMiLCJyb2xlIjoicHVibGljIiwiaWF0IjoxNzE2MTk2MjA0LCJleHAiOjE3NDc3NTM4MDR9.JOlRDkSVg3FMBcM-DbAG6MpN-Mro75raeqAN8E02GjA';
+
+const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);

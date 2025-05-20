@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tanzania Instagram Directory</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50 p-6 font-sans">
+  <div class="max-w-xl mx-auto bg-white p-6 rounded shadow">
+    <h1 class="text-2xl font-bold mb-4">Submit Your Instagram Profile</h1>
+    <form id="profile-submission-form" class="space-y-4">
+      <input id="name" type="text" placeholder="Business Name" class="w-full px-4 py-2 border rounded" required>
+      <input id="handle" type="text" placeholder="Instagram Handle" class="w-full px-4 py-2 border rounded" required>
+      <textarea id="bio" placeholder="Short Bio" class="w-full px-4 py-2 border rounded" required></textarea>
+      <input id="category" type="text" placeholder="Category" class="w-full px-4 py-2 border rounded" required>
+      <input id="location" type="text" placeholder="Location" class="w-full px-4 py-2 border rounded" required>
+      <input id="email" type="email" placeholder="Email" class="w-full px-4 py-2 border rounded" required>
+      <input id="phone" type="text" placeholder="Phone" class="w-full px-4 py-2 border rounded">
+      <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded">Submit</button>
+    </form>
+  </div>
+  <script src="supabase.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
