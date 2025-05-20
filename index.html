@@ -1,27 +1,1420 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Tanzania Instagram Directory</title>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tanzania Instagram Directory - Interactive Business Connection Hub</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+        
+        .hero-gradient {
+            background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);
+        }
+        
+        .insta-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .insta-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .social-btn {
+            transition: transform 0.2s ease;
+        }
+        
+        .social-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .category-tab.active {
+            background-color: #6366F1;
+            color: white;
+        }
+        
+        .profile-image {
+            transition: transform 0.3s ease;
+        }
+        
+        .profile-image:hover {
+            transform: scale(1.05);
+        }
+        
+        .badge-verified {
+            background-color: #3897f0;
+        }
+        
+        .badge-popular {
+            background-color: #ed4956;
+        }
+        
+        .badge-new {
+            background-color: #58c322;
+        }
+        
+        .ad-space {
+            background: linear-gradient(45deg, #ffdc80, #fcaf45, #f77737);
+        }
+        
+        /* Hide scrollbars but maintain functionality for better PDF export */
+        ::-webkit-scrollbar {
+            width: 0px;
+            background: transparent;
+        }
+
+        /* Like animation */
+        @keyframes likeEffect {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+        
+        .like-animate {
+            animation: likeEffect 0.5s;
+        }
+        
+        /* For featured carousel */
+        .carousel-container {
+            scroll-behavior: smooth;
+        }
+    </style>
 </head>
-<body class="bg-gray-50 p-6 font-sans">
-  <div class="max-w-xl mx-auto bg-white p-6 rounded shadow">
-    <h1 class="text-2xl font-bold mb-4">Submit Your Instagram Profile</h1>
-    <form id="profile-submission-form" class="space-y-4">
-      <input id="name" type="text" placeholder="Business Name" class="w-full px-4 py-2 border rounded" required>
-      <input id="handle" type="text" placeholder="Instagram Handle" class="w-full px-4 py-2 border rounded" required>
-      <textarea id="bio" placeholder="Short Bio" class="w-full px-4 py-2 border rounded" required></textarea>
-      <input id="category" type="text" placeholder="Category" class="w-full px-4 py-2 border rounded" required>
-      <input id="location" type="text" placeholder="Location" class="w-full px-4 py-2 border rounded" required>
-      <input id="email" type="email" placeholder="Email" class="w-full px-4 py-2 border rounded" required>
-      <input id="phone" type="text" placeholder="Phone" class="w-full px-4 py-2 border rounded">
-      <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded">Submit</button>
-    </form>
-  </div>
-  <script src="supabase.js"></script>
-  <script src="script.js"></script>
+<body>
+    <!-- Header -->
+    <header class="relative bg-white shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center">
+                    <a href="#" class="text-2xl font-bold text-indigo-600">
+                        <i class="fab fa-instagram mr-2"></i> Tanzania<span class="text-pink-500">Insta</span>Directory
+                    </a>
+                </div>
+                <div class="hidden md:flex items-center space-x-6">
+                    <a href="#home" class="font-medium hover:text-indigo-600 transition">Home</a>
+                å    <a href="#directory" class="font-medium hover:text-indigo-600 transition">Directory</a>
+                    <a href="#submit" class="font-medium hover:text-indigo-600 transition">Submit Profile</a>
+                    <a href="#about" class="font-medium hover:text-indigo-600 transition">About</a>
+                    <a href="#contact" class="font-medium hover:text-indigo-600 transition">Contact</a>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="text-gray-600 hover:text-indigo-600">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Mobile menu, hidden by default -->
+            <div id="mobile-menu" class="md:hidden hidden">
+                <div class="flex flex-col space-y-3 py-3">
+                    <a href="#home" class="font-medium hover:text-indigo-600 transition">Home</a>
+                    <a href="#directory" class="font-medium hover:text-indigo-600 transition">Directory</a>
+                    <a href="#submit" class="font-medium hover:text-indigo-600 transition">Submit Profile</a>
+                    <a href="#about" class="font-medium hover:text-indigo-600 transition">About</a>
+                    <a href="#contact" class="font-medium hover:text-indigo-600 transition">Contact</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-gradient text-white">
+        <div class="container mx-auto px-4 py-16 md:py-24">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-8 md:mb-0">
+                    <h1 class="text-4xl md:text-5xl font-bold mb-4">Discover Tanzania's Best Instagram Accounts</h1>
+                    <p class="text-xl mb-8 opacity-90">Connect with top businesses, influencers, and creators from across Tanzania.</p>
+                    <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                        <a href="#directory" class="bg-white text-indigo-600 font-semibold px-6 py-3 rounded-lg shadow-lg hover:bg-gray-100 transition inline-block text-center">Browse Directory</a>
+                        <a href="#submit" class="bg-transparent border-2 border-white font-semibold px-6 py-3 rounded-lg hover:bg-white hover:text-indigo-600 transition inline-block text-center">Add Your Profile</a>
+                    </div>
+                </div>
+                <div class="md:w-1/2 md:pl-8 flex justify-center">
+                    <div class="relative w-full max-w-md">
+                        <div class="bg-white shadow-xl rounded-lg p-4">
+                            <div class="flex items-center mb-3">
+                                <div class="w-10 h-10 rounded-full bg-gradient-to-r from-pink-500 to-red-500 flex items-center justify-center">
+                                    <i class="fab fa-instagram text-white text-xl"></i>
+                                </div>
+                                <div class="ml-3">
+                                    <p class="font-bold text-gray-800">Tanzania Instagram Directory</p>
+                                    <p class="text-gray-600 text-sm">@tanzaniainstadir</p>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <div class="h-64 rounded-lg bg-gray-200 flex items-center justify-center">
+                                    <i class="fas fa-images text-4xl text-gray-400"></i>
+                                </div>
+                            </div>
+                            <div class="flex justify-between text-gray-600 text-lg mb-2">
+                                <button class="social-btn hover:text-red-500"><i class="far fa-heart"></i></button>
+                                <button class="social-btn hover:text-blue-400"><i class="far fa-comment"></i></button>
+                                <button class="social-btn hover:text-green-500"><i class="far fa-share-square"></i></button>
+                                <button class="social-btn hover:text-amber-500"><i class="far fa-bookmark"></i></button>
+                            </div>
+                            <p class="text-gray-800"><span class="font-bold">1,234 likes</span></p>
+                            <p class="text-gray-800"><span class="font-bold">tanzaniainstadir</span> Discover the best businesses and creators in Tanzania! 🇹🇿 #TanzaniaDirectory</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Search Section -->
+    <section class="bg-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="max-w-3xl mx-auto">
+                <form class="flex flex-col md:flex-row">
+                    <div class="flex-1 mb-4 md:mb-0 md:mr-4">
+                        <div class="relative">
+                            <input type="text" placeholder="Search Instagram accounts, businesses, or keywords..." class="w-full px-5 py-4 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            <i class="fas fa-search absolute right-5 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        </div>
+                    </div>
+                    <button type="submit" class="bg-indigo-600 text-white px-6 py-4 rounded-lg font-medium hover:bg-indigo-700 transition">
+                        Search
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Featured Accounts Section -->
+    <section class="py-12 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-3xl font-bold text-gray-800">Featured Accounts</h2>
+                <div class="flex space-x-2">
+                    <button id="prev-featured" class="p-2 rounded-full bg-white shadow hover:bg-gray-100 transition">
+                        <i class="fas fa-chevron-left text-gray-600"></i>
+                    </button>
+                    <button id="next-featured" class="p-2 rounded-full bg-white shadow hover:bg-gray-100 transition">
+                        <i class="fas fa-chevron-right text-gray-600"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="carousel-container overflow-x-hidden">
+                <div id="featured-carousel" class="flex space-x-6 py-4">
+                    <!-- Featured Account 1 -->
+                    <div class="flex-shrink-0 w-64 bg-white rounded-xl shadow-md overflow-hidden insta-card">
+                        <div class="p-1">
+                            <div class="relative">
+                                <div class="h-64 bg-gray-100 rounded-lg overflow-hidden">
+                                    <div class="absolute top-3 right-3">
+                                        <span class="badge-verified text-xs font-semibold px-2 py-1 rounded-full text-white">
+                                            <i class="fas fa-check-circle mr-1"></i>Verified
+                                        </span>
+                                    </div>
+                                    <div class="h-full flex items-center justify-center">
+                                        <i class="fas fa-user text-4xl text-gray-300"></i>
+                                    </div>
+                                </div>
+                                <div class="p-4">
+                                    <div class="flex items-center">
+                                        <h3 class="text-lg font-bold text-gray-800">Mazrui Smart Phone TZ</h3>
+                                        <i class="fas fa-check-circle text-blue-500 ml-1"></i>
+                                    </div>
+                                    <p class="text-sm text-gray-500 mb-2">@mazrui_smart_phone_tz</p>
+                                    <p class="text-sm text-gray-700 mb-3">Premium smartphones at the best prices in Tanzania.</p>
+                                    <div class="flex items-center mb-3">
+                                        <i class="fas fa-map-marker-alt text-red-500 mr-1"></i>
+                                        <span class="text-xs text-gray-500">Dar es Salaam</span>
+                                        <i class="fas fa-tag text-indigo-500 ml-3 mr-1"></i>
+                                        <span class="text-xs text-gray-500">Phone Seller</span>
+                                    </div>
+                                    <div class="flex items-center text-sm text-gray-500 mb-3">
+                                        <i class="fas fa-user-friends mr-1"></i>
+                                        <span>25.4K followers</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <a href="#" class="social-btn bg-indigo-500 hover:bg-indigo-600 text-white px-3 py-1 rounded text-sm">
+                                            <i class="fab fa-instagram mr-1"></i> Follow
+                                        </a>
+                                        <div class="flex">
+                                            <button onclick="likeProfile(this)" class="social-btn mr-2 text-gray-500 hover:text-red-500">
+                                                <i class="far fa-heart"></i>
+                                            </button>
+                                            <button onclick="shareProfile(this)" class="social-btn text-gray-500 hover:text-blue-500">
+                                                <i class="fas fa-share-alt"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Featured Account 2 -->
+                    <div class="flex-shrink-0 w-64 bg-white rounded-xl shadow-md overflow-hidden insta-card">
+                        <div class="p-1">
+                            <div class="relative">
+                                <div class="h-64 bg-gray-100 rounded-lg overflow-hidden">
+                                    <div class="absolute top-3 right-3">
+                                        <span class="badge-popular text-xs font-semibold px-2 py-1 rounded-full text-white">
+                                            <i class="fas fa-fire mr-1"></i>Popular
+                                        </span>
+                                    </div>
+                                    <div class="h-full flex items-center justify-center">
+                                        <i class="fas fa-store text-4xl text-gray-300"></i>
+                                    </div>
+                                </div>
+                                <div class="p-4">
+                                    <div class="flex items-center">
+                                        <h3 class="text-lg font-bold text-gray-800">Zanzibar Spices</h3>
+                                        <i class="fas fa-check-circle text-blue-500 ml-1"></i>
+                                    </div>
+                                    <p class="text-sm text-gray-500 mb-2">@zanzibarspicesofficial</p>
+                                    <p class="text-sm text-gray-700 mb-3">Authentic Zanzibar spices delivered worldwide. Experience the taste of Zanzibar.</p>
+                                    <div class="flex items-center mb-3">
+                                        <i class="fas fa-map-marker-alt text-red-500 mr-1"></i>
+                                        <span class="text-xs text-gray-500">Zanzibar</span>
+                                        <i class="fas fa-tag text-indigo-500 ml-3 mr-1"></i>
+                                        <span class="text-xs text-gray-500">Food & Grocery</span>
+                                    </div>
+                                    <div class="flex items-center text-sm text-gray-500 mb-3">
+                                        <i class="fas fa-user-friends mr-1"></i>
+                                        <span>42.7K followers</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <a href="#" class="social-btn bg-indigo-500 hover:bg-indigo-600 text-white px-3 py-1 rounded text-sm">
+                                            <i class="fab fa-instagram mr-1"></i> Follow
+                                        </a>
+                                        <div class="flex">
+                                            <button onclick="likeProfile(this)" class="social-btn mr-2 text-gray-500 hover:text-red-500">
+                                                <i class="far fa-heart"></i>
+                                            </button>
+                                            <button onclick="shareProfile(this)" class="social-btn text-gray-500 hover:text-blue-500">
+                                                <i class="fas fa-share-alt"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Featured Account 3 -->
+                    <div class="flex-shrink-0 w-64 bg-white rounded-xl shadow-md overflow-hidden insta-card">
+                        <div class="p-1">
+                            <div class="relative">
+                                <div class="h-64 bg-gray-100 rounded-lg overflow-hidden">
+                                    <div class="absolute top-3 right-3">
+                                        <span class="badge-new text-xs font-semibold px-2 py-1 rounded-full text-white">
+                                            <i class="fas fa-star mr-1"></i>Featured
+                                        </span>
+                                    </div>
+                                    <div class="h-full flex items-center justify-center">
+                                        <i class="fas fa-utensils text-4xl text-gray-300"></i>
+                                    </div>
+                                </div>
+                                <div class="p-4">
+                                    <div class="flex items-center">
+                                        <h3 class="text-lg font-bold text-gray-800">Dar Seafood Palace</h3>
+                                    </div>
+                                    <p class="text-sm text-gray-500 mb-2">@darseafoodpalace</p>
+                                    <p class="text-sm text-gray-700 mb-3">Fresh seafood restaurant with ocean view. Best seafood in Dar es Salaam.</p>
+                                    <div class="flex items-center mb-3">
+                                        <i class="fas fa-map-marker-alt text-red-500 mr-1"></i>
+                                        <span class="text-xs text-gray-500">Dar es Salaam</span>
+                                        <i class="fas fa-tag text-indigo-500 ml-3 mr-1"></i>
+                                        <span class="text-xs text-gray-500">Restaurant</span>
+                                    </div>
+                                    <div class="flex items-center text-sm text-gray-500 mb-3">
+                                        <i class="fas fa-user-friends mr-1"></i>
+                                        <span>18.3K followers</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <a href="#" class="social-btn bg-indigo-500 hover:bg-indigo-600 text-white px-3 py-1 rounded text-sm">
+                                            <i class="fab fa-instagram mr-1"></i> Follow
+                                        </a>
+                                        <div class="flex">
+                                            <button onclick="likeProfile(this)" class="social-btn mr-2 text-gray-500 hover:text-red-500">
+                                                <i class="far fa-heart"></i>
+                                            </button>
+                                            <button onclick="shareProfile(this)" class="social-btn text-gray-500 hover:text-blue-500">
+                                                <i class="fas fa-share-alt"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Featured Account 4 -->
+                    <div class="flex-shrink-0 w-64 bg-white rounded-xl shadow-md overflow-hidden insta-card">
+                        <div class="p-1">
+                            <div class="relative">
+                                <div class="h-64 bg-gray-100 rounded-lg overflow-hidden">
+                                    <div class="absolute top-3 right-3">
+                                        <span class="badge-verified text-xs font-semibold px-2 py-1 rounded-full text-white">
+                                            <i class="fas fa-check-circle mr-1"></i>Verified
+                                        </span>
+                                    </div>
+                                    <div class="h-full flex items-center justify-center">
+                                        <i class="fas fa-tshirt text-4xl text-gray-300"></i>
+                                    </div>
+                                </div>
+                                <div class="p-4">
+                                    <div class="flex items-center">
+                                        <h3 class="text-lg font-bold text-gray-800">Kitenge Couture</h3>
+                                        <i class="fas fa-check-circle text-blue-500 ml-1"></i>
+                                    </div>
+                                    <p class="text-sm text-gray-500 mb-2">@kitengecouture_tz</p>
+                                    <p class="text-sm text-gray-700 mb-3">Modern African fashion with traditional Tanzanian fabrics. Shipping worldwide.</p>
+                                    <div class="flex items-center mb-3">
+                                        <i class="fas fa-map-marker-alt text-red-500 mr-1"></i>
+                                        <span class="text-xs text-gray-500">Arusha</span>
+                                        <i class="fas fa-tag text-indigo-500 ml-3 mr-1"></i>
+                                        <span class="text-xs text-gray-500">Fashion</span>
+                                    </div>
+                                    <div class="flex items-center text-sm text-gray-500 mb-3">
+                                        <i class="fas fa-user-friends mr-1"></i>
+                                        <span>67.2K followers</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <a href="#" class="social-btn bg-indigo-500 hover:bg-indigo-600 text-white px-3 py-1 rounded text-sm">
+                                            <i class="fab fa-instagram mr-1"></i> Follow
+                                        </a>
+                                        <div class="flex">
+                                            <button onclick="likeProfile(this)" class="social-btn mr-2 text-gray-500 hover:text-red-500">
+                                                <i class="far fa-heart"></i>
+                                            </button>
+                                            <button onclick="shareProfile(this)" class="social-btn text-gray-500 hover:text-blue-500">
+                                                <i class="fas fa-share-alt"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Featured Account 5 -->
+                    <div class="flex-shrink-0 w-64 bg-white rounded-xl shadow-md overflow-hidden insta-card">
+                        <div class="p-1">
+                            <div class="relative">
+                                <div class="h-64 bg-gray-100 rounded-lg overflow-hidden">
+                                    <div class="absolute top-3 right-3">
+                                        <span class="badge-popular text-xs font-semibold px-2 py-1 rounded-full text-white">
+                                            <i class="fas fa-fire mr-1"></i>Popular
+                                        </span>
+                                    </div>
+                                    <div class="h-full flex items-center justify-center">
+                                        <i class="fas fa-camera text-4xl text-gray-300"></i>
+                                    </div>
+                                </div>
+                                <div class="p-4">
+                                    <div class="flex items-center">
+                                        <h3 class="text-lg font-bold text-gray-800">Tanzania Photography</h3>
+                                    </div>
+                                    <p class="text-sm text-gray-500 mb-2">@tanzaniaphotography</p>
+                                    <p class="text-sm text-gray-700 mb-3">Stunning nature and wildlife photography from Tanzania's national parks.</p>
+                                    <div class="flex items-center mb-3">
+                                        <i class="fas fa-map-marker-alt text-red-500 mr-1"></i>
+                                        <span class="text-xs text-gray-500">Serengeti</span>
+                                        <i class="fas fa-tag text-indigo-500 ml-3 mr-1"></i>
+                                        <span class="text-xs text-gray-500">Photography</span>
+                                    </div>
+                                    <div class="flex items-center text-sm text-gray-500 mb-3">
+                                        <i class="fas fa-user-friends mr-1"></i>
+                                        <span>104K followers</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <a href="#" class="social-btn bg-indigo-500 hover:bg-indigo-600 text-white px-3 py-1 rounded text-sm">
+                                            <i class="fab fa-instagram mr-1"></i> Follow
+                                        </a>
+                                        <div class="flex">
+                                            <button onclick="likeProfile(this)" class="social-btn mr-2 text-gray-500 hover:text-red-500">
+                                                <i class="far fa-heart"></i>
+                                            </button>
+                                            <button onclick="shareProfile(this)" class="social-btn text-gray-500 hover:text-blue-500">
+                                                <i class="fas fa-share-alt"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trending Posts Section -->
+    <section class="py-12 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-3xl font-bold text-gray-800">Trending Posts</h2>
+                <div class="flex space-x-2">
+                    <button id="prev-trending" class="p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition">
+                        <i class="fas fa-chevron-left text-gray-600"></i>
+                    </button>
+                    <button id="next-trending" class="p-2 rounded-full bg-gray-100 hover:bg-gray-200 transition">
+                        <i class="fas fa-chevron-right text-gray-600"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Trending Post 1 -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden insta-card">
+                    <div class="p-1">
+                        <div class="relative">
+                            <div class="h-64 bg-gray-100 rounded-t-lg overflow-hidden">
+                                <div class="h-full flex items-center justify-center">
+                                    <i class="far fa-image text-4xl text-gray-300"></i>
+                                </div>
+                            </div>
+                            <div class="p-4">
+                                <div class="flex items-center mb-3">
+                                    <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center mr-3">
+                                        <i class="fas fa-user text-gray-400"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-semibold text-gray-800">Dar Seafood Palace</h3>
+                                        <p class="text-xs text-gray-500">@darseafoodpalace</p>
+                                    </div>
+                                </div>
+                                <p class="text-gray-700 mb-4">Experience our new seafood platter! Fresh from the Indian Ocean to your plate. Limited time offer. 🦞🦐🐟 #DarEsSalaam #Seafood</p>
+                                <div class="flex justify-between items-center">
+                                    <div class="flex items-center text-gray-500 text-sm">
+                                        <button onclick="likePost(this)" class="social-btn mr-4 hover:text-red-500">
+                                            <i class="far fa-heart mr-1"></i> 238
+                                        </button>
+                                        <button class="social-btn mr-4 hover:text-blue-500">
+                                            <i class="far fa-comment mr-1"></i> 42
+                                        </button>
+                                    </div>
+                                    <button onclick="sharePost(this)" class="social-btn text-gray-500 hover:text-green-500">
+                                        <i class="fas fa-share"></i>
+                                    </button>
+                                </div>
+                                <div class="mt-4 text-xs text-gray-500">
+                                    <i class="far fa-clock mr-1"></i> Posted 3 hours ago
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Trending Post 2 -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden insta-card">
+                    <div class="p-1">
+                        <div class="relative">
+                            <div class="h-64 bg-gray-100 rounded-t-lg overflow-hidden">
+                                <div class="h-full flex items-center justify-center">
+                                    <i class="far fa-image text-4xl text-gray-300"></i>
+                                </div>
+                            </div>
+                            <div class="p-4">
+                                <div class="flex items-center mb-3">
+                                    <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center mr-3">
+                                        <i class="fas fa-user text-gray-400"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-semibold text-gray-800">Mazrui Smart Phone TZ</h3>
+                                        <p class="text-xs text-gray-500">@mazrui_smart_phone_tz</p>
+                                    </div>
+                                </div>
+                                <p class="text-gray-700 mb-4">Just received the latest smartphones! Limited stock available at special introductory prices. Visit our store today! 📱 #NewPhones #DarEsSalaam</p>
+                                <div class="flex justify-between items-center">
+                                    <div class="flex items-center text-gray-500 text-sm">
+                                        <button onclick="likePost(this)" class="social-btn mr-4 hover:text-red-500">
+                                            <i class="far fa-heart mr-1"></i> 412
+                                        </button>
+                                        <button class="social-btn mr-4 hover:text-blue-500">
+                                            <i class="far fa-comment mr-1"></i> 87
+                                        </button>
+                                    </div>
+                                    <button onclick="sharePost(this)" class="social-btn text-gray-500 hover:text-green-500">
+                                        <i class="fas fa-share"></i>
+                                    </button>
+                                </div>
+                                <div class="mt-4 text-xs text-gray-500">
+                                    <i class="far fa-clock mr-1"></i> Posted 5 hours ago
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Trending Post 3 -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden insta-card">
+                    <div class="p-1">
+                        <div class="relative">
+                            <div class="h-64 bg-gray-100 rounded-t-lg overflow-hidden">
+                                <div class="h-full flex items-center justify-center">
+                                    <i class="far fa-image text-4xl text-gray-300"></i>
+                                </div>
+                            </div>
+                            <div class="p-4">
+                                <div class="flex items-center mb-3">
+                                    <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center mr-3">
+                                        <i class="fas fa-user text-gray-400"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-semibold text-gray-800">Kitenge Couture</h3>
+                                        <p class="text-xs text-gray-500">@kitengecouture_tz</p>
+                                    </div>
+                                </div>
+                                <p class="text-gray-700 mb-4">Our new collection is now available! Modern designs with traditional Tanzanian fabrics. Pre-order now for 15% discount! 👗 #AfricanFashion #TanzanianStyle</p>
+                                <div class="flex justify-between items-center">
+                                    <div class="flex items-center text-gray-500 text-sm">
+                                        <button onclick="likePost(this)" class="social-btn mr-4 hover:text-red-500">
+                                            <i class="far fa-heart mr-1"></i> 756
+                                        </button>
+                                        <button class="social-btn mr-4 hover:text-blue-500">
+                                            <i class="far fa-comment mr-1"></i> 143
+                                        </button>
+                                    </div>
+                                    <button onclick="sharePost(this)" class="social-btn text-gray-500 hover:text-green-500">
+                                        <i class="fas fa-share"></i>
+                                    </button>
+                                </div>
+                                <div class="mt-4 text-xs text-gray-500">
+                                    <i class="far fa-clock mr-1"></i> Posted 8 hours ago
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Advertisement Space -->
+    <section class="py-8 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="ad-space rounded-xl p-6 text-white text-center">
+                <div class="flex flex-col items-center">
+                    <span class="text-xs uppercase tracking-wide mb-2">Advertisement</span>
+                    <h3 class="text-2xl font-bold mb-3">Promote Your Business Here</h3>
+                    <p class="mb-6">Reach thousands of Instagram users and businesses across Tanzania</p>
+                    <a href="#contact" class="bg-white text-indigo-600 font-medium px-6 py-3 rounded-lg hover:bg-gray-100 transition">Contact for Ad Space</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Directory Section -->
+    <section id="directory" class="py-12 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-gray-800 mb-8">Instagram Directory</h2>
+            
+            <!-- Category Navigation -->
+            <div class="mb-8 overflow-x-auto">
+                <div class="flex space-x-2 min-w-max pb-2">
+                    <button class="category-tab active px-4 py-2 rounded-lg font-medium">All</button>
+                    <button class="category-tab bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-lg font-medium">Phone Sellers</button>
+                    <button class="category-tab bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-lg font-medium">Fashion</button>
+                    <button class="category-tab bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-lg font-medium">Restaurants</button>
+                    <button class="category-tab bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-lg font-medium">Travel</button>
+                    <button class="category-tab bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-lg font-medium">Photography</button>
+                    <button class="category-tab bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-lg font-medium">Art & Crafts</button>
+                    <button class="category-tab bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-lg font-medium">Food & Grocery</button>
+                    <button class="category-tab bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-lg font-medium">Influencers</button>
+                </div>
+            </div>
+            
+            <!-- Location Filter -->
+            <div class="mb-8">
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <h3 class="font-semibold mb-3">Filter by Location:</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <button class="bg-indigo-500 text-white px-3 py-1 rounded-full text-sm">All Tanzania</button>
+                        <button class="bg-white hover:bg-gray-100 px-3 py-1 rounded-full text-sm">Dar es Salaam</button>
+                        <button class="bg-white hover:bg-gray-100 px-3 py-1 rounded-full text-sm">Zanzibar</button>
+                        <button class="bg-white hover:bg-gray-100 px-3 py-1 rounded-full text-sm">Arusha</button>
+                        <button class="bg-white hover:bg-gray-100 px-3 py-1 rounded-full text-sm">Mwanza</button>
+                        <button class="bg-white hover:bg-gray-100 px-3 py-1 rounded-full text-sm">Dodoma</button>
+                        <button class="bg-white hover:bg-gray-100 px-3 py-1 rounded-full text-sm">Mbeya</button>
+                        <button class="bg-white hover:bg-gray-100 px-3 py-1 rounded-full text-sm">Tanga</button>
+                        <button class="bg-white hover:bg-gray-100 px-3 py-1 rounded-full text-sm">Other</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Directory Listings -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <!-- Directory Entry 1 -->
+                <div class="bg-white border border-gray-200 rounded-lg overflow-hidden insta-card">
+                    <div class="p-4">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center mr-3">
+                                <i class="fas fa-user text-gray-400"></i>
+                            </div>
+                            <div>
+                                <div class="flex items-center">
+                                    <h3 class="font-bold text-gray-800">Mazrui Smart Phone TZ</h3>
+                                    <i class="fas fa-check-circle text-blue-500 ml-1 text-sm"></i>
+                                </div>
+                                <p class="text-sm text-gray-500">@mazrui_smart_phone_tz</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-700 mb-3">Premium smartphones at the best prices in Tanzania.</p>
+                        <div class="flex flex-wrap gap-2 mb-3">
+                            <span class="bg-gray-100 text-xs px-2 py-1 rounded">Phone Seller</span>
+                            <span class="bg-gray-100 text-xs px-2 py-1 rounded">Dar es Salaam</span>
+                        </div>
+                        <div class="flex items-center text-xs text-gray-500 mb-3">
+                            <i class="fas fa-user-friends mr-1"></i>
+                            <span>25.4K followers</span>
+                        </div>
+                        <div class="flex items-center text-xs text-gray-500 mb-4">
+                            <i class="fas fa-phone mr-1"></i>
+                            <span>+255 7XX XXX XXX</span>
+                            <i class="fas fa-envelope ml-3 mr-1"></i>
+                            <a href="mailto:info@mazruismartphone.co.tz" class="text-indigo-500 hover:underline">Email</a>
+                        </div>
+                        <div class="flex justify-between">
+                            <a href="https://www.instagram.com/mazrui_smart_phone_tz" target="_blank" class="social-btn bg-indigo-500 hover:bg-indigo-600 text-white px-3 py-1 rounded text-sm">
+                                <i class="fab fa-instagram mr-1"></i> View Profile
+                            </a>
+                            <div class="flex">
+                                <button onclick="likeProfile(this)" class="social-btn mr-2 text-gray-500 hover:text-red-500">
+                                    <i class="far fa-heart"></i>
+                                </button>
+                                <button onclick="shareProfile(this)" class="social-btn text-gray-500 hover:text-blue-500">
+                                    <i class="fas fa-share-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Directory Entry 2 -->
+                <div class="bg-white border border-gray-200 rounded-lg overflow-hidden insta-card">
+                    <div class="p-4">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center mr-3">
+                                <i class="fas fa-utensils text-gray-400"></i>
+                            </div>
+                            <div>
+                                <div class="flex items-center">
+                                    <h3 class="font-bold text-gray-800">Dar Seafood Palace</h3>
+                                </div>
+                                <p class="text-sm text-gray-500">@darseafoodpalace</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-700 mb-3">Fresh seafood restaurant with ocean view. Best seafood in Dar es Salaam.</p>
+                        <div class="flex flex-wrap gap-2 mb-3">
+                            <span class="bg-gray-100 text-xs px-2 py-1 rounded">Restaurant</span>
+                            <span class="bg-gray-100 text-xs px-2 py-1 rounded">Dar es Salaam</span>
+                        </div>
+                        <div class="flex items-center text-xs text-gray-500 mb-3">
+                            <i class="fas fa-user-friends mr-1"></i>
+                            <span>18.3K followers</span>
+                        </div>
+                        <div class="flex items-center text-xs text-gray-500 mb-4">
+                            <i class="fas fa-phone mr-1"></i>
+                            <span>+255 7XX XXX XXX</span>
+                            <i class="fas fa-envelope ml-3 mr-1"></i>
+                            <a href="#" class="text-indigo-500 hover:underline">Email</a>
+                        </div>
+                        <div class="flex justify-between">
+                            <a href="https://www.instagram.com/darseafoodpalace" target="_blank" class="social-btn bg-indigo-500 hover:bg-indigo-600 text-white px-3 py-1 rounded text-sm">
+                                <i class="fab fa-instagram mr-1"></i> View Profile
+                            </a>
+                            <div class="flex">
+                                <button onclick="likeProfile(this)" class="social-btn mr-2 text-gray-500 hover:text-red-500">
+                                    <i class="far fa-heart"></i>
+                                </button>
+                                <button onclick="shareProfile(this)" class="social-btn text-gray-500 hover:text-blue-500">
+                                    <i class="fas fa-share-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Directory Entry 3 -->
+                <div class="bg-white border border-gray-200 rounded-lg overflow-hidden insta-card">
+                    <div class="p-4">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center mr-3">
+                                <i class="fas fa-tshirt text-gray-400"></i>
+                            </div>
+                            <div>
+                                <div class="flex items-center">
+                                    <h3 class="font-bold text-gray-800">Kitenge Couture</h3>
+                                    <i class="fas fa-check-circle text-blue-500 ml-1 text-sm"></i>
+                                </div>
+                                <p class="text-sm text-gray-500">@kitengecouture_tz</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-700 mb-3">Modern African fashion with traditional Tanzanian fabrics. Shipping worldwide.</p>
+                        <div class="flex flex-wrap gap-2 mb-3">
+                            <span class="bg-gray-100 text-xs px-2 py-1 rounded">Fashion</span>
+                            <span class="bg-gray-100 text-xs px-2 py-1 rounded">Arusha</span>
+                        </div>
+                        <div class="flex items-center text-xs text-gray-500 mb-3">
+                            <i class="fas fa-user-friends mr-1"></i>
+                            <span>67.2K followers</span>
+                        </div>
+                        <div class="flex items-center text-xs text-gray-500 mb-4">
+                            <i class="fas fa-phone mr-1"></i>
+                            <span>+255 7XX XXX XXX</span>
+                            <i class="fas fa-envelope ml-3 mr-1"></i>
+                            <a href="#" class="text-indigo-500 hover:underline">Email</a>
+                        </div>
+                        <div class="flex justify-between">
+                            <a href="https://www.instagram.com/kitengecouture_tz" target="_blank" class="social-btn bg-indigo-500 hover:bg-indigo-600 text-white px-3 py-1 rounded text-sm">
+                                <i class="fab fa-instagram mr-1"></i> View Profile
+                            </a>
+                            <div class="flex">
+                                <button onclick="likeProfile(this)" class="social-btn mr-2 text-gray-500 hover:text-red-500">
+                                    <i class="far fa-heart"></i>
+                                </button>
+                                <button onclick="shareProfile(this)" class="social-btn text-gray-500 hover:text-blue-500">
+                                    <i class="fas fa-share-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Directory Entry 4 -->
+                <div class="bg-white border border-gray-200 rounded-lg overflow-hidden insta-card">
+                    <div class="p-4">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center mr-3">
+                                <i class="fas fa-store text-gray-400"></i>
+                            </div>
+                            <div>
+                                <div class="flex items-center">
+                                    <h3 class="font-bold text-gray-800">Zanzibar Spices</h3>
+                                    <i class="fas fa-check-circle text-blue-500 ml-1 text-sm"></i>
+                                </div>
+                                <p class="text-sm text-gray-500">@zanzibarspicesofficial</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-700 mb-3">Authentic Zanzibar spices delivered worldwide. Experience the taste of Zanzibar.</p>
+                        <div class="flex flex-wrap gap-2 mb-3">
+                            <span class="bg-gray-100 text-xs px-2 py-1 rounded">Food & Grocery</span>
+                            <span class="bg-gray-100 text-xs px-2 py-1 rounded">Zanzibar</span>
+                        </div>
+                        <div class="flex items-center text-xs text-gray-500 mb-3">
+                            <i class="fas fa-user-friends mr-1"></i>
+                            <span>42.7K followers</span>
+                        </div>
+                        <div class="flex items-center text-xs text-gray-500 mb-4">
+                            <i class="fas fa-phone mr-1"></i>
+                            <span>+255 7XX XXX XXX</span>
+                            <i class="fas fa-envelope ml-3 mr-1"></i>
+                            <a href="#" class="text-indigo-500 hover:underline">Email</a>
+                        </div>
+                        <div class="flex justify-between">
+                            <a href="https://www.instagram.com/zanzibarspicesofficial" target="_blank" class="social-btn bg-indigo-500 hover:bg-indigo-600 text-white px-3 py-1 rounded text-sm">
+                                <i class="fab fa-instagram mr-1"></i> View Profile
+                            </a>
+                            <div class="flex">
+                                <button onclick="likeProfile(this)" class="social-btn mr-2 text-gray-500 hover:text-red-500">
+                                    <i class="far fa-heart"></i>
+                                </button>
+                                <button onclick="shareProfile(this)" class="social-btn text-gray-500 hover:text-blue-500">
+                                    <i class="fas fa-share-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Directory Entry 5 -->
+                <div class="bg-white border border-gray-200 rounded-lg overflow-hidden insta-card">
+                    <div class="p-4">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center mr-3">
+                                <i class="fas fa-camera text-gray-400"></i>
+                            </div>
+                            <div>
+                                <div class="flex items-center">
+                                    <h3 class="font-bold text-gray-800">Tanzania Photography</h3>
+                                </div>
+                                <p class="text-sm text-gray-500">@tanzaniaphotography</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-700 mb-3">Stunning nature and wildlife photography from Tanzania's national parks.</p>
+                        <div class="flex flex-wrap gap-2 mb-3">
+                            <span class="bg-gray-100 text-xs px-2 py-1 rounded">Photography</span>
+                            <span class="bg-gray-100 text-xs px-2 py-1 rounded">Serengeti</span>
+                        </div>
+                        <div class="flex items-center text-xs text-gray-500 mb-3">
+                            <i class="fas fa-user-friends mr-1"></i>
+                            <span>104K followers</span>
+                        </div>
+                        <div class="flex items-center text-xs text-gray-500 mb-4">
+                            <i class="fas fa-phone mr-1"></i>
+                            <span>+255 7XX XXX XXX</span>
+                            <i class="fas fa-envelope ml-3 mr-1"></i>
+                            <a href="#" class="text-indigo-500 hover:underline">Email</a>
+                        </div>
+                        <div class="flex justify-between">
+                            <a href="https://www.instagram.com/tanzaniaphotography" target="_blank" class="social-btn bg-indigo-500 hover:bg-indigo-600 text-white px-3 py-1 rounded text-sm">
+                                <i class="fab fa-instagram mr-1"></i> View Profile
+                            </a>
+                            <div class="flex">
+                                <button onclick="likeProfile(this)" class="social-btn mr-2 text-gray-500 hover:text-red-500">
+                                    <i class="far fa-heart"></i>
+                                </button>
+                                <button onclick="shareProfile(this)" class="social-btn text-gray-500 hover:text-blue-500">
+                                    <i class="fas fa-share-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Directory Entry 6 -->
+                <div class="bg-white border border-gray-200 rounded-lg overflow-hidden insta-card">
+                    <div class="p-4">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center mr-3">
+                                <i class="fas fa-plane text-gray-400"></i>
+                            </div>
+                            <div>
+                                <div class="flex items-center">
+                                    <h3 class="font-bold text-gray-800">Tanzania Safari Adventures</h3>
+                                    <i class="fas fa-check-circle text-blue-500 ml-1 text-sm"></i>
+                                </div>
+                                <p class="text-sm text-gray-500">@tanzaniasafaris</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-700 mb-3">Unforgettable safari experiences in Tanzania's national parks. Book your adventure today!</p>
+                        <div class="flex flex-wrap gap-2 mb-3">
+                            <span class="bg-gray-100 text-xs px-2 py-1 rounded">Travel</span>
+                            <span class="bg-gray-100 text-xs px-2 py-1 rounded">Arusha</span>
+                        </div>
+                        <div class="flex items-center text-xs text-gray-500 mb-3">
+                            <i class="fas fa-user-friends mr-1"></i>
+                            <span>78.5K followers</span>
+                        </div>
+                        <div class="flex items-center text-xs text-gray-500 mb-4">
+                            <i class="fas fa-phone mr-1"></i>
+                            <span>+255 7XX XXX XXX</span>
+                            <i class="fas fa-envelope ml-3 mr-1"></i>
+                            <a href="#" class="text-indigo-500 hover:underline">Email</a>
+                        </div>
+                        <div class="flex justify-between">
+                            <a href="https://www.instagram.com/tanzaniasafaris" target="_blank" class="social-btn bg-indigo-500 hover:bg-indigo-600 text-white px-3 py-1 rounded text-sm">
+                                <i class="fab fa-instagram mr-1"></i> View Profile
+                            </a>
+                            <div class="flex">
+                                <button onclick="likeProfile(this)" class="social-btn mr-2 text-gray-500 hover:text-red-500">
+                                    <i class="far fa-heart"></i>
+                                </button>
+                                <button onclick="shareProfile(this)" class="social-btn text-gray-500 hover:text-blue-500">
+                                    <i class="fas fa-share-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Directory Entry 7 -->
+                <div class="bg-white border border-gray-200 rounded-lg overflow-hidden insta-card">
+                    <div class="p-4">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center mr-3">
+                                <i class="fas fa-mobile-alt text-gray-400"></i>
+                            </div>
+                            <div>
+                                <div class="flex items-center">
+                                    <h3 class="font-bold text-gray-800">Dar Tech Hub</h3>
+                                </div>
+                                <p class="text-sm text-gray-500">@dartechhub</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-700 mb-3">Latest electronics and gadgets at competitive prices. Expert advice and after-sales service.</p>
+                        <div class="flex flex-wrap gap-2 mb-3">
+                            <span class="bg-gray-100 text-xs px-2 py-1 rounded">Phone Seller</span>
+                            <span class="bg-gray-100 text-xs px-2 py-1 rounded">Dar es Salaam</span>
+                        </div>
+                        <div class="flex items-center text-xs text-gray-500 mb-3">
+                            <i class="fas fa-user-friends mr-1"></i>
+                            <span>22.1K followers</span>
+                        </div>
+                        <div class="flex items-center text-xs text-gray-500 mb-4">
+                            <i class="fas fa-phone mr-1"></i>
+                            <span>+255 7XX XXX XXX</span>
+                            <i class="fas fa-envelope ml-3 mr-1"></i>
+                            <a href="#" class="text-indigo-500 hover:underline">Email</a>
+                        </div>
+                        <div class="flex justify-between">
+                            <a href="https://www.instagram.com/dartechhub" target="_blank" class="social-btn bg-indigo-500 hover:bg-indigo-600 text-white px-3 py-1 rounded text-sm">
+                                <i class="fab fa-instagram mr-1"></i> View Profile
+                            </a>
+                            <div class="flex">
+                                <button onclick="likeProfile(this)" class="social-btn mr-2 text-gray-500 hover:text-red-500">
+                                    <i class="far fa-heart"></i>
+                                </button>
+                                <button onclick="shareProfile(this)" class="social-btn text-gray-500 hover:text-blue-500">
+                                    <i class="fas fa-share-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Directory Entry 8 -->
+                <div class="bg-white border border-gray-200 rounded-lg overflow-hidden insta-card">
+                    <div class="p-4">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center mr-3">
+                                <i class="fas fa-paint-brush text-gray-400"></i>
+                            </div>
+                            <div>
+                                <div class="flex items-center">
+                                    <h3 class="font-bold text-gray-800">Tinga Tinga Art Gallery</h3>
+                                </div>
+                                <p class="text-sm text-gray-500">@tingatinga_gallery</p>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-700 mb-3">Authentic Tanzanian Tinga Tinga art pieces. Supporting local artists since 1990.</p>
+                        <div class="flex flex-wrap gap-2 mb-3">
+                            <span class="bg-gray-100 text-xs px-2 py-1 rounded">Art & Crafts</span>
+                            <span class="bg-gray-100 text-xs px-2 py-1 rounded">Dar es Salaam</span>
+                        </div>
+                        <div class="flex items-center text-xs text-gray-500 mb-3">
+                            <i class="fas fa-user-friends mr-1"></i>
+                            <span>35.8K followers</span>
+                        </div>
+                        <div class="flex items-center text-xs text-gray-500 mb-4">
+                            <i class="fas fa-phone mr-1"></i>
+                            <span>+255 7XX XXX XXX</span>
+                            <i class="fas fa-envelope ml-3 mr-1"></i>
+                            <a href="#" class="text-indigo-500 hover:underline">Email</a>
+                        </div>
+                        <div class="flex justify-between">
+                            <a href="https://www.instagram.com/tingatinga_gallery" target="_blank" class="social-btn bg-indigo-500 hover:bg-indigo-600 text-white px-3 py-1 rounded text-sm">
+                                <i class="fab fa-instagram mr-1"></i> View Profile
+                            </a>
+                            <div class="flex">
+                                <button onclick="likeProfile(this)" class="social-btn mr-2 text-gray-500 hover:text-red-500">
+                                    <i class="far fa-heart"></i>
+                                </button>
+                                <button onclick="shareProfile(this)" class="social-btn text-gray-500 hover:text-blue-500">
+                                    <i class="fas fa-share-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Pagination -->
+            <div class="mt-10 flex justify-center">
+                <nav class="inline-flex rounded-md shadow">
+                    <a href="#" class="py-2 px-4 bg-gray-100 text-gray-700 rounded-l-md hover:bg-gray-200 transition">
+                        <i class="fas fa-chevron-left"></i>
+                    </a>
+                    <a href="#" class="py-2 px-4 bg-indigo-600 text-white hover:bg-indigo-700 transition">1</a>
+                    <a href="#" class="py-2 px-4 bg-white text-gray-700 hover:bg-gray-100 transition">2</a>
+                    <a href="#" class="py-2 px-4 bg-white text-gray-700 hover:bg-gray-100 transition">3</a>
+                    <span class="py-2 px-4 bg-white text-gray-700">...</span>
+                    <a href="#" class="py-2 px-4 bg-white text-gray-700 hover:bg-gray-100 transition">12</a>
+                    <a href="#" class="py-2 px-4 bg-gray-100 text-gray-700 rounded-r-md hover:bg-gray-200 transition">
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </section>
+
+    <!-- Submit Profile Section -->
+    <section id="submit" class="py-12 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="max-w-3xl mx-auto">
+                <div class="text-center mb-10">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-4">Add Your Instagram Profile</h2>
+                    <p class="text-gray-600">Join our growing directory of Tanzanian Instagram accounts and increase your visibility.</p>
+                </div>
+                
+                <div class="bg-white rounded-xl shadow-md p-6">
+                    <form id="profile-submission-form">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                            <div>
+                                <label class="block text-gray-700 font-medium mb-2" for="business-name">Business/Account Name</label>
+                                <input type="text" id="business-name" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+                            </div>
+                            <div>
+                                <label class="block text-gray-700 font-medium mb-2" for="instagram-handle">Instagram Handle</label>
+                                <div class="flex">
+                                    <span class="bg-gray-100 px-3 py-2 border border-r-0 border-gray-300 rounded-l-lg text-gray-500">@</span>
+                                    <input type="text" id="instagram-handle" class="flex-1 px-4 py-2 border border-gray-300 rounded-r-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                            <div>
+                                <label class="block text-gray-700 font-medium mb-2" for="business-category">Business Category</label>
+                                <select id="business-category" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+                                    <option value="">Select Category</option>
+                                    <option value="phone-seller">Phone Seller</option>
+                                    <option value="fashion">Fashion</option>
+                                    <option value="restaurant">Restaurant</option>
+                                    <option value="travel">Travel</option>
+                                    <option value="photography">Photography</option>
+                                    <option value="art-crafts">Art & Crafts</option>
+                                    <option value="food-grocery">Food & Grocery</option>
+                                    <option value="influencer">Influencer</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-gray-700 font-medium mb-2" for="location">Location</label>
+                                <select id="location" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+                                    <option value="">Select Location</option>
+                                    <option value="dar-es-salaam">Dar es Salaam</option>
+                                    <option value="zanzibar">Zanzibar</option>
+                                    <option value="arusha">Arusha</option>
+                                    <option value="mwanza">Mwanza</option>
+                                    <option value="dodoma">Dodoma</option>
+                                    <option value="mbeya">Mbeya</option>
+                                    <option value="tanga">Tanga</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <label class="block text-gray-700 font-medium mb-2" for="bio">Bio/Description (Max 200 characters)</label>
+                            <textarea id="bio" rows="3" maxlength="200" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" required></textarea>
+                            <div class="text-right text-xs text-gray-500 mt-1"><span id="char-count">0</span>/200 characters</div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                            <div>
+                                <label class="block text-gray-700 font-medium mb-2" for="phone">Phone Number</label>
+                                <input type="tel" id="phone" placeholder="+255" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            </div>
+                            <div>
+                                <label class="block text-gray-700 font-medium mb-2" for="email">Email Address</label>
+                                <input type="email" id="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+                            </div>
+                        </div>
+                        
+                        <div class="flex justify-center">
+                            <button type="submit" class="bg-indigo-600 text-white px-8 py-3 rounded-lg font-medium hover:bg-indigo-700 transition">Submit Your Profile</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="py-12 bg-indigo-600 text-white">
+        <div class="container mx-auto px-4">
+            <div class="max-w-3xl mx-auto text-center">
+                <h2 class="text-3xl font-bold mb-4">Stay Updated with New Listings</h2>
+                <p class="mb-8 opacity-90">Subscribe to our newsletter to receive updates about new Instagram accounts added to our directory.</p>
+                <form class="flex flex-col sm:flex-row gap-4">
+                    <input type="email" placeholder="Enter your email address" class="flex-1 px-4 py-3 rounded-lg focus:outline-none text-gray-800">
+                    <button type="submit" class="bg-white text-indigo-600 px-6 py-3 rounded-lg font-medium hover:bg-gray-100 transition">Subscribe</button>
+                </form>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Contact Section -->
+    <section id="contact" class="py-12 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="max-w-5xl mx-auto">
+                <div class="text-center mb-10">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-4">Contact Us</h2>
+                    <p class="text-gray-600">Have questions or need assistance? Reach out to our team.</p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                    <div>
+                        <div class="bg-gray-50 rounded-lg p-6">
+                            <h3 class="text-xl font-bold text-gray-800 mb-4">Get in Touch</h3>
+                            <form>
+                                <div class="mb-4">
+                                    <label class="block text-gray-700 font-medium mb-2" for="name">Your Name</label>
+                                    <input type="text" id="name" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="block text-gray-700 font-medium mb-2" for="contact-email">Your Email</label>
+                                    <input type="email" id="contact-email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="block text-gray-700 font-medium mb-2" for="subject">Subject</label>
+                                    <input type="text" id="subject" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" required>
+                                </div>
+                                <div class="mb-6">
+                                    <label class="block text-gray-700 font-medium mb-2" for="message">Message</label>
+                                    <textarea id="message" rows="4" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500" required></textarea>
+                                </div>
+                                <button type="submit" class="w-full bg-indigo-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-indigo-700 transition">Send Message</button>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="bg-gray-50 rounded-lg p-6 h-full">
+                            <h3 class="text-xl font-bold text-gray-800 mb-6">Contact Information</h3>
+                            
+                            <div class="mb-6">
+                                <div class="flex items-start">
+                                    <div class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center mr-4">
+                                        <i class="fas fa-envelope text-indigo-500"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-gray-800 mb-1">Email</h4>
+                                        <a href="mailto:info@zanzibaba.online" class="text-indigo-600 hover:underline">info@zanzibaba.online</a>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-6">
+                                <div class="flex items-start">
+                                    <div class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center mr-4">
+                                        <i class="fas fa-phone-alt text-indigo-500"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-gray-800 mb-1">Phone</h4>
+                                        <a href="tel:+255716002790" class="text-indigo-600 hover:underline">+255 716 002 790</a>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-8">
+                                <div class="flex items-start">
+                                    <div class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center mr-4">
+                                        <i class="fas fa-map-marker-alt text-indigo-500"></i>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-semibold text-gray-800 mb-1">Location</h4>
+                                        <p class="text-gray-600">Dar es Salaam, Tanzania</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <h4 class="font-semibold text-gray-800 mb-3">Follow Us</h4>
+                                <div class="flex space-x-3">
+                                    <a href="#" class="w-10 h-10 rounded-full bg-indigo-600 flex items-center justify-center text-white hover:bg-indigo-700 transition">
+                                        <i class="fab fa-instagram"></i>
+                                    </a>
+                                    <a href="#" class="w-10 h-10 rounded-full bg-indigo-600 flex items-center justify-center text-white hover:bg-indigo-700 transition">
+                                        <i class="fab fa-facebook-f"></i>
+                                    </a>
+                                    <a href="#" class="w-10 h-10 rounded-full bg-indigo-600 flex items-center justify-center text-white hover:bg-indigo-700 transition">
+                                        <i class="fab fa-twitter"></i>
+                                    </a>
+                                    <a href="#" class="w-10 h-10 rounded-full bg-indigo-600 flex items-center justify-center text-white hover:bg-indigo-700 transition">
+                                        <i class="fab fa-linkedin-in"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-10">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Tanzania Instagram Directory</h3>
+                    <p class="mb-4 text-gray-300">Connect with the best businesses and influencers across Tanzania through our comprehensive Instagram directory.</p>
+                    <div class="flex space-x-3">
+                        <a href="#" class="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center hover:bg-indigo-600 transition">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center hover:bg-indigo-600 transition">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center hover:bg-indigo-600 transition">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center hover:bg-indigo-600 transition">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#home" class="text-gray-300 hover:text-white transition">Home</a></li>
+                        <li><a href="#directory" class="text-gray-300 hover:text-white transition">Directory</a></li>
+                        <li><a href="#submit" class="text-gray-300 hover:text-white transition">Submit Profile</a></li>
+                        <li><a href="#contact" class="text-gray-300 hover:text-white transition">Contact</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition">Terms & Conditions</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Categories</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-300 hover:text-white transition">Phone Sellers</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition">Fashion</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition">Restaurants</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition">Travel</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition">Photography</a></li>
+                        <li><a href="#" class="text-gray-300 hover:text-white transition">Art & Crafts</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Contact Information</h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-start">
+                            <i class="fas fa-envelope mt-1 mr-3 text-indigo-400"></i>
+                            <a href="mailto:info@zanzibaba.online" class="text-gray-300 hover:text-white transition">info@zanzibaba.online</a>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-phone-alt mt-1 mr-3 text-indigo-400"></i>
+                            <a href="tel:+255716002790" class="text-gray-300 hover:text-white transition">+255 716 002 790</a>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-map-marker-alt mt-1 mr-3 text-indigo-400"></i>
+                            <span class="text-gray-300">Dar es Salaam, Tanzania</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-300">
+                <p>&copy; 2023 Tanzania Instagram Directory. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+        
+        // Character counter for bio
+        document.getElementById('bio').addEventListener('input', function() {
+            const charCount = this.value.length;
+            document.getElementById('char-count').textContent = charCount;
+        });
+        
+        // Like profile functionality
+        function likeProfile(button) {
+            button.classList.add('like-animate');
+            setTimeout(() => {
+                button.classList.remove('like-animate');
+            }, 500);
+            
+            const icon = button.querySelector('i');
+            if (icon.classList.contains('far')) {
+                icon.classList.remove('far');
+                icon.classList.add('fas');
+                icon.style.color = '#ed4956';
+            } else {
+                icon.classList.remove('fas');
+                icon.classList.add('far');
+                icon.style.color = '';
+            }
+        }
+        
+        // Share profile functionality
+        function shareProfile(button) {
+            // Create a fake share dialog
+            alert('Sharing functionality would open native share dialog or copy link to clipboard.');
+        }
+        
+        // Like post functionality
+        function likePost(button) {
+            button.classList.add('like-animate');
+            setTimeout(() => {
+                button.classList.remove('like-animate');
+            }, 500);
+            
+            const icon = button.querySelector('i');
+            if (icon.classList.contains('far')) {
+                icon.classList.remove('far');
+                icon.classList.add('fas');
+                icon.style.color = '#ed4956';
+                
+                // Update like count
+                const text = button.textContent;
+                const count = parseInt(text.match(/\d+/)[0]);
+                button.innerHTML = `<i class="fas fa-heart mr-1" style="color:#ed4956"></i> ${count + 1}`;
+            } else {
+                icon.classList.remove('fas');
+                icon.classList.add('far');
+                icon.style.color = '';
+                
+                // Update like count
+                const text = button.textContent;
+                const count = parseInt(text.match(/\d+/)[0]);
+                button.innerHTML = `<i class="far fa-heart mr-1"></i> ${count - 1}`;
+            }
+        }
+        
+        // Share post functionality
+        function sharePost(button) {
+            // Create a fake share dialog
+            alert('Sharing functionality would open native share dialog or copy link to clipboard.');
+        }
+        
+        // Category tabs
+        document.querySelectorAll('.category-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.category-tab').forEach(t => {
+                    t.classList.remove('active');
+                    t.classList.add('bg-gray-100');
+                    t.classList.add('hover:bg-gray-200');
+                });
+                this.classList.add('active');
+                this.classList.remove('bg-gray-100');
+                this.classList.remove('hover:bg-gray-200');
+            });
+        });
+        
+        // Form submission handling
+        document.getElementById('profile-submission-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Thank you for your submission! We will review your profile and add it to our directory soon.');
+            this.reset();
+        });
+        
+        // Featured accounts carousel
+        const featuredCarousel = document.getElementById('featured-carousel');
+        const prevFeatured = document.getElementById('prev-featured');
+        const nextFeatured = document.getElementById('next-featured');
+        let featuredPosition = 0;
+        
+        nextFeatured.addEventListener('click', function() {
+            featuredPosition += 288; // Width of card + margin
+            if (featuredPosition > featuredCarousel.scrollWidth - featuredCarousel.clientWidth) {
+                featuredPosition = featuredCarousel.scrollWidth - featuredCarousel.clientWidth;
+            }
+            featuredCarousel.style.transform = `translateX(-${featuredPosition}px)`;
+        });
+        
+        prevFeatured.addEventListener('click', function() {
+            featuredPosition -= 288; // Width of card + margin
+            if (featuredPosition < 0) {
+                featuredPosition = 0;
+            }
+            featuredCarousel.style.transform = `translateX(-${featuredPosition}px)`;
+        });
+    </script>
 </body>
 </html>
